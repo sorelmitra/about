@@ -69,14 +69,12 @@ h1, h2, h3, h4 {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
-.index-background-img-container {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translateY(-50%) translateX(-50%);
-	-webkit-transform: translateY(-50%) translateX(-50%);
+body {
+	background-image: url('https://live.staticflickr.com/65535/48721151361_b8584bb8b4_o.jpg');
+	background-repeat: none;
+	background-attachment: fixed;
+	background-width: 2560px;
 }
-
 
 
 /*****************************************************
@@ -87,10 +85,6 @@ h1, h2, h3, h4 {
  * Sizes
  *
  */
-
-.index-background-img {
-	width: 2560px;
-}
 
 .index-div-title {
 	left: 30px;
