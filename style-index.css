@@ -87,27 +87,27 @@ body {
  */
 
 .index-div-title {
-	left: 20px;
-	top: 20px;
-	width: 120px;
-	height: 60px;
-	font-size: 18px;
+	left: 30px;
+	top: 30px;
+	width: 90px;
+	height: 40px;
+	font-size: 13px;
 }
 
 .index-div-work {
-	left: 5px;
-	top: 110px;
-	width: 290px;
-	height: 200px;
-	font-size: 16px;
+	left: 60px;
+	top: 100px;
+	width: 200px;
+	height: 170px;
+	font-size: 11px;
 }
 
 .index-div-freetime {
 	left: 20px;
-	top: 330px;
-	width: 260px;
-	height: 90px;
-	font-size: 16px;
+	top: 290px;
+	width: 160px;
+	height: 70px;
+	font-size: 11px;
 }
 
 @media (min-width: 590px) {
