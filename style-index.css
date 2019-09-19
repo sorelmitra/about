@@ -59,7 +59,7 @@ h1, h2, h3, h4 {
 	padding: 20px;
 	opacity: 0.9;
 	filter: alpha(opacity=90); /* For IE8 and earlier */
-	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 	z-index: 1;
 }
 
