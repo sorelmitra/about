@@ -164,23 +164,45 @@
  */
 
 .innerblock1 {
-	width: 400px;
+	width: 300px;
 }
 
 .innerblock2 {
-	width: 400px;
+	width: 300px;
 }
 
 .imageblock-img {
-	width: 400px;
+	width: 300px;
 }
 
 .imageblock-img-softphone-chat {
-	width: 400px;
+	width: 300px;
 }
 
 .imageblock-img-message-router {
-	width: 300px;
+	width: 200px;
+}
+
+@media (min-width: 450px) {
+	.innerblock1 {
+		width: 400px;
+	}
+
+	.innerblock2 {
+		width: 400px;
+	}
+
+	.imageblock-img {
+		width: 400px;
+	}
+
+	.imageblock-img-softphone-chat {
+		width: 400px;
+	}
+
+	.imageblock-img-message-router {
+		width: 300px;
+	}
 }
 
 @media (min-width: 650px) {
