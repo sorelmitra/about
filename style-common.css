@@ -333,6 +333,8 @@
 }
 
 .button-link {
+	display: inline-block;
+	margin: 2px;
 	padding: 10px;
 	text-decoration: none;
 	border-radius: 20px;
