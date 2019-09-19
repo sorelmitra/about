@@ -185,6 +185,14 @@
 	width: 200px;
 }
 
+.cme-light {
+	width: 250px;
+}
+
+.cme-dark {
+	width: 250px;
+}
+
 @media (min-width: 450px) {
 	.innerblock1 {
 		width: 400px;
@@ -206,6 +214,14 @@
 
 	.imageblock-img-message-router {
 		width: 300px;
+	}
+	
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
+		width: 400px;
 	}
 }
 
@@ -229,6 +245,14 @@
 	}
 
 	.imageblock-img-message-router {
+		width: 400px;
+	}
+	
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
 		width: 400px;
 	}
 }
@@ -256,6 +280,13 @@
 		width: 500px;
 	}
 
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
+		width: 400px;
+	}
 }
 
 
@@ -295,12 +326,10 @@
 
 .cme-light {
 	border-radius: 10px;
-	width: 400px;
 }
 
 .cme-dark {
 	border-radius: 10px;
-	width: 400px;
 }
 
 .button-link {
