@@ -89,22 +89,22 @@ body {
 .index-div-title {
 	left: 20px;
 	top: 20px;
-	width: 150px;
-	height: 70px;
-	font-size: 22px;
+	width: 120px;
+	height: 60px;
+	font-size: 18px;
 }
 
 .index-div-work {
-	left: 60px;
-	top: 120px;
-	width: 290px;
-	height: 200px;
+	left: 30px;
+	top: 100px;
+	width: 250px;
+	height: 240px;
 	font-size: 16px;
 }
 
 .index-div-freetime {
-	left: 40px;
-	top: 340px;
+	left: 10px;
+	top: 360px;
 	width: 260px;
 	height: 90px;
 	font-size: 14px;
