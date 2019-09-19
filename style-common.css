@@ -165,10 +165,12 @@
 
 .innerblock1 {
 	width: 300px;
+	padding: 10px;
 }
 
 .innerblock2 {
 	width: 300px;
+	padding: 10px;
 }
 
 .imageblock-img {
@@ -186,10 +188,12 @@
 @media (min-width: 450px) {
 	.innerblock1 {
 		width: 400px;
+		padding: 20px;
 	}
 
 	.innerblock2 {
 		width: 400px;
+		padding: 20px;
 	}
 
 	.imageblock-img {
@@ -208,10 +212,12 @@
 @media (min-width: 650px) {
 	.innerblock1 {
 		width: 500px;
+		padding: 40px;
 	}
 
 	.innerblock2 {
 		width: 500px;
+		padding: 40px;
 	}
 
 	.imageblock-img {
@@ -230,10 +236,12 @@
 @media (min-width: 769px) {
 	.innerblock1 {
 		width: 700px;
+		padding: 40px;
 	}
 
 	.innerblock2 {
 		width: 700px;
+		padding: 40px;
 	}
 
 	.imageblock-img {
