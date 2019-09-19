@@ -158,6 +158,84 @@
  *
  *
  *
+ *  Sizes
+ *
+ *
+ */
+
+.innerblock1 {
+	width: 400px;
+}
+
+.innerblock2 {
+	width: 400px;
+}
+
+.imageblock-img {
+	width: 400px;
+}
+
+.imageblock-img-softphone-chat {
+	width: 400px;
+}
+
+.imageblock-img-message-router {
+	width: 300px;
+}
+
+@media (min-width: 650px) {
+	.innerblock1 {
+		width: 500px;
+	}
+
+	.innerblock2 {
+		width: 500px;
+	}
+
+	.imageblock-img {
+		width: 500px;
+	}
+
+	.imageblock-img-softphone-chat {
+		width: 500px;
+	}
+
+	.imageblock-img-message-router {
+		width: 400px;
+	}
+}
+
+@media (min-width: 769px) {
+	.innerblock1 {
+		width: 700px;
+	}
+
+	.innerblock2 {
+		width: 700px;
+	}
+
+	.imageblock-img {
+		width: 700px;
+	}
+
+	.imageblock-img-softphone-chat {
+		width: 712px;
+	}
+
+	.imageblock-img-message-router {
+		width: 500px;
+	}
+
+}
+
+
+
+
+
+/*******************************************************
+ *
+ *
+ *
  *  Other elements
  *
  *
@@ -218,58 +296,15 @@
 	text-align: center;
 }
 
-.innerblock1 {
-	width: 500px;
-}
-
-.innerblock2 {
-	width: 500px;
-}
-
 .imageblock {
 	text-align: center;
 	margin-bottom: 10px;
-}
-
-.imageblock-img {
-	width: 500px;
-}
-
-.imageblock-img-softphone-chat {
-	width: 500px;
-}
-
-.imageblock-img-message-router {
-	width: 400px;
 }
 
 .caption {
 	font-size: .7em;
 	color: #373737;
 	text-decoration: none; 
-}
-
-@media (min-width: 769px) {
-	.innerblock1 {
-		width: 700px;
-	}
-
-	.innerblock2 {
-		width: 700px;
-	}
-
-	.imageblock-img {
-		width: 700px;
-	}
-
-	.imageblock-img-softphone-chat {
-		width: 712px;
-	}
-
-	.imageblock-img-message-router {
-		width: 500px;
-	}
-
 }
 
 .subnote-line {

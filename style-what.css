@@ -75,16 +75,49 @@ h1 {
 .medallion-textbox {
 	display: flex;
 	justify-content: center;
-	width: 150px;
 	padding-left: 20px;
 }
 
 .medallion-text {
 	display: inline-block;
-	font-size: 12px;
 	margin: auto;
 }
 
 ul > li {
 	padding-bottom: 10px;
 }
+
+
+/************
+ *
+ * Sizes
+ */
+
+.medallion-textbox {
+	width: 150px;
+}
+
+.medallion-text {
+	font-size: 12px;
+}
+
+@media (min-width: 650px) {
+	.medallion-textbox {
+		width: 200px;
+	}
+
+	.medallion-text {
+		font-size: 14px;
+	}
+}
+
+@media (min-width: 769px) {
+	.medallion-textbox {
+		width: 300px;
+	}
+
+	.medallion-text {
+		font-size: 16px;
+	}
+}
+
