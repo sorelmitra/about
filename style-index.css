@@ -110,6 +110,32 @@ body {
 	font-size: 18px;
 }
 
+@media (min-width: 650px) {
+	.index-div-title {
+		left: 30px;
+		top: 60px;
+		width: 200px;
+		height: 100px;
+		font-size: 30px;
+	}
+
+	.index-div-work {
+		left: 80px;
+		top: 180px;
+		width: 440px;
+		height: 200px;
+		font-size: 20px;
+	}
+
+	.index-div-freetime {
+		left: 60px;
+		top: 400px;
+		width: 260px;
+		height: 120px;
+		font-size: 18px;
+	}
+}
+
 @media (min-width: 769px) {
 	.index-div-title {
 		left: 60px;

@@ -164,21 +164,21 @@
  */
 
 .innerblock1 {
-	width: 300px;
+	width: 280px;
 	padding: 10px;
 }
 
 .innerblock2 {
-	width: 300px;
+	width: 280px;
 	padding: 10px;
 }
 
 .imageblock-img {
-	width: 300px;
+	width: 280px;
 }
 
 .imageblock-img-softphone-chat {
-	width: 300px;
+	width: 280px;
 }
 
 .imageblock-img-message-router {
@@ -225,7 +225,7 @@
 	}
 }
 
-@media (min-width: 650px) {
+@media (min-width: 590px) {
 	.innerblock1 {
 		width: 500px;
 		padding: 40px;
@@ -257,7 +257,39 @@
 	}
 }
 
-@media (min-width: 769px) {
+@media (min-width: 690px) {
+	.innerblock1 {
+		width: 600px;
+		padding: 40px;
+	}
+
+	.innerblock2 {
+		width: 600px;
+		padding: 40px;
+	}
+
+	.imageblock-img {
+		width: 600px;
+	}
+
+	.imageblock-img-softphone-chat {
+		width: 600px;
+	}
+
+	.imageblock-img-message-router {
+		width: 500px;
+	}
+	
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
+		width: 400px;
+	}
+}
+
+@media (min-width: 790px) {
 	.innerblock1 {
 		width: 700px;
 		padding: 40px;
