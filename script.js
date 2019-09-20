@@ -250,7 +250,7 @@ function createModalElements(modalParentId, modalRootId, modalCloseButtonId, mod
 				$('<div/>', {
 					class: `${modalPartId}-header`
 				}).append(
-					$('<span/>', {
+					$('<div/>', {
 						id: modalCloseButtonId,
 						class: `${modalPartId}-close`
 					}).html('&times;'),
