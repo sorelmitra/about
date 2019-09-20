@@ -115,7 +115,7 @@ function createMenuBar() {
 
 	let menuButton = $("#id-menu-button");
 	let modal = document.getElementById("id-modal-root");
-	let span = document.getElementById("id-modal-close-button");
+	let closeButton = document.getElementById("id-modal-close-button");
 
 	function menuOn(on, lit) {
 		if (on) {
@@ -138,7 +138,7 @@ function createMenuBar() {
 			menuOn(false, false);
 		}
 	}
-	span.onclick = function() {
+	closeButton.onclick = function() {
 		menuOn(false, false);
 	}
 }
