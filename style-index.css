@@ -1,14 +1,7 @@
-.menu-bar {
-	box-sizing: border-box;
-    width: 100%;
-    display: flex;
-	position: fixed;
-	top: 0px;
-    flex: 1;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: darkred;
-    padding: 7px;
+.home-language-container {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
 }
 
 body {

@@ -30,10 +30,9 @@ function entryPoint() {
 	createFooter();
 	createModalElements("id-menu-modal", "id-modal-root", "id-modal-close-button", "modal-menu");
 	createMenuItems("modal-menu");
-	getLanguageAndCreateMenuBar();
+	createMenuBar();
 }
 
-const cookieLanguage = 'language';
 const imgUiMenuOn = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
 const imgUiMenuOff = 'https://live.staticflickr.com/65535/48711141977_7c603ce013_o.png';
 const imgUiMenuOffLit = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
@@ -43,16 +42,37 @@ let imgUiLang = {
 	EN: 'https://live.staticflickr.com/65535/48706045511_f0557d72f9_o.png',
 	ES: 'https://live.staticflickr.com/65535/48710362622_258acb7a9d_o.png',
 };
-let imgUiLangCurrent = '';
 let domain = null;
-let knownLanguages = ['RO', 'EN', 'ES']
-
-function getLanguageAndCreateMenuBar() {
-	determineLanguage();
-	createMenuBar();
+let knownLanguages = ['RO', 'EN', /*'ES'*/]
+let texts = {
+	'home': {
+		'RO': 'ACASĂ',
+		'EN': 'HOME'
+	},
+	'what': {
+		'RO': 'CE POT FACE PENTRU TINE',
+		'EN': 'WHAT I CAN DO FOR YOU'
+	},
+	'work': {
+		'RO': 'PORTOFOLIU',
+		'EN': 'PORTFOLIO'
+	},
+	'freetime': {
+		'RO': 'TIMP LIBER',
+		'EN': 'FREE TIME'
+	},
+	'copyright': {
+		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
+		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
+	}
 }
 
 function createMenuBar() {
+	createMenuBarForNormalPage();
+	createLanguageForHomePage();
+}
+
+function createMenuBarForNormalPage() {
 	let isMenuOn = false;
 
 	if (!$('#id-menu-bar').length) return;
@@ -92,25 +112,13 @@ function createMenuBar() {
 		$('<div/>', {
 			class: 'menubar-box-avatar',
 		}).append(
-			$('<a/>', {
-				href: 'index.html',
-				class: 'menubar-link'
-			}).append(
-				$('<img/>', {
-					src: imgUiAvatar,
-					class: 'menubar-avatar',
-				}),
-			),
-		),
-		$('<div/>', {
-			class: 'menubar-box-language',
-		}).append(
 			$('<img/>', {
-				src: imgUiLangCurrent,
-				class: 'menubar-language',
-				onclick: 'changeLanguage()'
+				onclick: 'gotoPage("index.html")',
+				src: imgUiAvatar,
+				class: 'menubar-avatar',
 			}),
 		),
+		createLanguageBox(),
 	);
 
 	let menuButton = $("#id-menu-button");
@@ -143,54 +151,93 @@ function createMenuBar() {
 	}
 }
 
-function determineLanguage() {
-	let c = Cookies.getJSON(cookieLanguage);
-	if (c && c.lang) {
-		imgUiLangCurrent = imgUiLang[c.lang];
-		applyLanguage(c.lang);
-		return;
-	}
-	rotateLanguage();
+function createLanguageBox() {
+	return $('<div/>', {
+		class: 'menubar-box-language',
+	}).append(
+		$('<img/>', {
+			src: getLangImageSrc(),
+			class: 'menubar-language',
+			onclick: 'rotateLanguage()'
+		}),
+	)
+}
+
+function createLanguageForHomePage() {
+	$('#home-language-container').html(
+		createLanguageBox()
+	)
 }
 
 function rotateLanguage() {
-	let c = Cookies.getJSON(cookieLanguage);
-	let oldLang = c ? c.lang : undefined;
-	if (c && c.lang) {
-		c.langIndex++;
-		if (c.langIndex >= knownLanguages.length) {
-			c.langIndex = 0;
-		}
-	} else {
-		c = {
-			lang: null,
-			langIndex: 0,
-		}
+	let oldLang = computeExistingLang();
+	let index = knownLanguages.indexOf(oldLang);
+	if (index == NaN) {
+		LOG.debug(`Language ${oldLang} is not recognized among ${knownLanguages}`);
+		return;
 	}
-	c.lang = knownLanguages[c.langIndex];
-	LOG.debug("Language: from", oldLang, "to", c.lang);
-	imgUiLangCurrent = imgUiLang[c.lang];
-	Cookies.set(cookieLanguage, c, { expires: 7, domain: domain });
 
-	applyLanguage(c.lang);
+	index++;
+	if (index >= knownLanguages.length) {
+			index = 0;
+	}
+	let newLang = knownLanguages[index];
+	LOG.debug(`Language from ${oldLang} to ${newLang}; index ${index}`);
+	applyLanguage(newLang);
 }
 
-function changeLanguage() {
-	rotateLanguage();
-	getLanguageAndCreateMenuBar();
+function applyLanguage(lang) {
+	let currentFilename = getCurrentFilename();
+	let newUrl = computeNewUrl(currentFilename, lang);
+	window.open(newUrl, "_self");
 }
 
-function applyLanguage(currentLang) {
-	$('h1, h2, h3, h4, p, ul, ol, li, span').addClass('lang-hidden');
-	for (const lang of knownLanguages) {
-		if (lang == currentLang) {
-			LOG.debug(`Setting ${lang} to visible`);
-			$(`.lang-${lang}`).removeClass('lang-hidden');
-		} else {
-			LOG.debug(`Setting ${lang} to invisible`);
-			$(`.lang-${lang}`).addClass('lang-hidden');
-		}
+function getCurrentFilename() {
+	let url = window.location.href;
+	let lastSlashPos = url.lastIndexOf('/');
+    let filename = url.substring(lastSlashPos + 1);
+	return filename;
+}
+
+function gotoPage(filename) {
+	let lang = computeExistingLang();
+	let newUrl = computeNewUrl(filename, lang);
+	window.open(newUrl, "_self");
+}
+
+function computeNewUrl(filename, lang) {
+	let dotPos = filename.lastIndexOf('.');
+	let ext = filename.substring(dotPos + 1);
+	let dashPos = filename.lastIndexOf('-');
+	let name = filename.substring(0, dotPos);
+	if (dashPos > 0) {
+		name = filename.substring(0, dashPos);
 	}
+	let newFilename = `${name}-${lang}.${ext}`;
+	if (lang == "EN") {
+		newFilename = `${name}.${ext}`;
+	}
+	LOG.debug(`Filename for new lang ${lang}: ${newFilename}`);
+	return newFilename;
+}
+
+function computeExistingLang() {
+	let url = window.location.href;
+	let lastSlashPos = url.lastIndexOf('/');
+    let filename = url.substring(lastSlashPos + 1);
+	let dotPos = filename.lastIndexOf('.');
+	let dashPos = filename.lastIndexOf('-');
+	let langPart = "EN";
+	if (dashPos > 0) {
+		langPart = filename.substring(dashPos + 1, dotPos);
+	}
+	LOG.debug(`Current lang <${langPart}>`);
+	return langPart;
+}
+
+function getLangImageSrc() {
+	let lang = computeExistingLang();
+	return imgUiLang[lang];
 }
 
 function createModalElements(modalParentId, modalRootId, modalCloseButtonId, modalPartId) {
@@ -259,51 +306,40 @@ function createMenuItems(modalPartId) {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				href: 'index.html',
+				onclick: 'gotoPage("index.html")',
 				class: 'menu-item-link'
-			}).append(
-				$("<span/>", {
-					class: 'lang-RO'
-				}).html("ACASĂ"),
-			),
+			}).html(getText('home')),
 		),
 		$('<div/>', {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				href: 'what.html',
+				onclick: 'gotoPage("what.html")',
 				class: 'menu-item-link'
-			}).append(
-				$("<span/>", {
-					class: 'lang-RO'
-				}).html("CE POT FACE PENTRU TINE"),
-			),
+			}).html(getText('what')),
 		),
 		$('<div/>', {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				href: 'work-projects.html',
+				onclick: 'gotoPage("work.html")',
 				class: 'menu-item-link'
-			}).append(
-				$("<span/>", {
-					class: 'lang-RO'
-				}).html("PORTOFOLIU"),
-			),
+			}).html(getText('work')),
 		),
 		$('<div/>', {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				href: 'freetime-projects.html',
+				onclick: 'gotoPage("freetime.html")',
 				class: 'menu-item-link'
-			}).append(
-				$("<span/>", {
-					class: 'lang-RO'
-				}).html("TIMP LIBER"),
-			),
+			}).html(getText('freetime')),
 		),
 	);
+}
+
+function getText(key) {
+	let lang = computeExistingLang();
+	return texts[key][lang];
 }
 
 function animateAppear(modal, modalPartId) {
@@ -341,8 +377,13 @@ function animateDisappear(modal, modalPartId) {
 }
 
 function createHeader() {
+	let headerId = 'id-header'
+	if ($(`#${headerId}`).length > 0) {
+		return;
+	}
 	$("body").prepend(
 		$("<div/>", {
+			id: headerId,
 			class: 'header'
 		}),
 		/*
@@ -363,18 +404,7 @@ function createFooter() {
 		}).append(
 			$("<span/>", {
 				class: 'subnote-inner'
-			}).append(
-				$('<span/>', {
-					class: 'lang-RO',
-				}).html("<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris."),
-			),
-			$("<span/>", {
-				class: 'subnote-inner'
-			}).append(
-				$('<span/>', {
-					class: 'lang-RO',
-				}).html("<b>Notă</b>: Acest site foloseste cookies pentru a ține minte limba aleasă."),
-			),
+			}).html(getText('copyright')),
 		)
 	);
 }
