@@ -329,7 +329,7 @@
  *
  *
  *
- *  Other elements
+ *  Custom classes
  *
  *
  */
@@ -417,6 +417,40 @@
 	width: 98%;
 	text-align: left;
 }
+
+.sidenote-div {
+	display: inline-block;
+	margin-left: 20%;
+	padding: 20px;
+	background: rgba(0,0,0,0.2);
+	border-left: 2px solid;
+	border-top: 2px solid;
+	border-right: 4px solid;
+	border-bottom: 4px solid;
+	border-left-color: rgba(0,0,0,0.2);
+	border-top-color: rgba(0,0,0,0.2);
+	border-right-color: rgba(0,0,0,0.2);
+	border-bottom-color: rgba(0,0,0,0.2);
+	border-radius: 20px;
+}
+
+.sidenote-title {
+	font-weight: 900;
+}
+
+
+
+
+/*******************************************************
+ *
+ *
+ *
+ *  Styling for common HTML elements
+ *
+ *
+ */
+
+
 
 html {
 	font-size: 100%;
