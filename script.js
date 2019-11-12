@@ -213,6 +213,12 @@ function computeNewUrl(filename, lang) {
 	if (dashPos > 0) {
 		name = filename.substring(0, dashPos);
 	}
+	if (name.length < 1) {
+		name = "index";
+	}
+	if (ext.length < 1) {
+		ext = "html";
+	}
 	let newFilename = `${name}-${lang}.${ext}`;
 	if (lang == "EN") {
 		newFilename = `${name}.${ext}`;
