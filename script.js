@@ -61,6 +61,10 @@ let texts = {
 		'RO': 'TIMP LIBER',
 		'EN': 'FREE TIME'
 	},
+	'contact': {
+		'RO': 'CONTACT',
+		'EN': 'CONTACT'
+	},
 	'copyright': {
 		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
 		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
@@ -339,6 +343,14 @@ function createMenuItems(modalPartId) {
 				onclick: 'gotoPage("freetime.html")',
 				class: 'menu-item-link'
 			}).html(getText('freetime')),
+		),
+		$('<div/>', {
+			class: 'menu-item'
+		}).append(
+			$('<a/>', {
+				onclick: 'gotoPage("contact.html")',
+				class: 'menu-item-link'
+			}).html(getText('contact')),
 		),
 	);
 }
