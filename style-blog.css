@@ -1,0 +1,264 @@
+.menu-bar {
+	box-sizing: border-box;
+    width: 100%;
+    display: flex;
+	position: fixed;
+	top: 0px;
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #DDCCFA;
+	border-bottom: 1px solid black;
+}
+
+.innerblock1 {
+	background-color: #FED4B5;
+	color: #1C2965;
+	display: inline-block;
+	margin: auto;
+	border: 1px black solid;
+	text-align: left;
+
+	position: relative;
+	z-index: -1;
+	border: 8px solid #666;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	-webkit-box-shadow: 2px 2px 4px #888;
+	-moz-box-shadow: 2px 2px 4px #888;
+	box-shadow: 2px 2px 4px #888;
+}
+.innerblock1:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -50px;
+  top: 30px;
+  border: 25px solid;
+  border-top-color: transparent;
+  border-right-color: #666;
+  border-bottom-color: #666;
+  border-left-color: transparent;
+}
+.innerblock1:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -30px;
+  top: 42px;
+  border: 15px solid;
+  border-top-color: transparent;
+  border-right-color: #FED4B5;
+  border-bottom-color: #FED4B5;
+  border-left-color: transparent;
+}
+
+.innerblock2 {
+	background-color: #DDCCFA;
+	color: #1C2965;
+	display: inline-block;
+	margin: auto;
+	text-align: left;
+	border: 1px black solid;
+
+	position: relative;
+	z-index: -1;
+	border: 8px solid #666;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	-webkit-box-shadow: 2px 2px 4px #888;
+	-moz-box-shadow: 2px 2px 4px #888;
+	box-shadow: 2px 2px 4px #888;
+}
+.innerblock2:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 100%;
+  top: 30px;
+  border: 25px solid;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #666;
+  border-left-color: #666;
+}
+.innerblock2:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 100%;
+  top: 42px;
+  border: 15px solid;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #DDCCFA;
+  border-left-color: #DDCCFA;
+}
+
+
+.subtitle {
+	margin-top: -20px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 12px;
+}
+
+body {
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	line-height: 1.6;
+	color: #373737;
+	background-color: #373737;
+	hanging-punctuation: first;
+}
+
+h1, h2, h3, h4 {
+	font-family: Arial, Helvetica, sans-serif;
+	letter-spacing: 0;
+	text-transform: none;
+	font-weight: 600;
+	line-height: 1;
+}
+
+p {
+	margin-top: 30px;
+}
+
+li {
+	margin-top: 5px;
+}
+
+
+
+
+
+/*******************************************************
+ *
+ *
+ *
+ *  Local Sizes
+ *
+ *
+ */
+
+.innerblock1 {
+	width: 250px;
+	padding: 10px;
+}
+
+.innerblock2 {
+	width: 250px;
+	padding: 10px;
+}
+
+.imageblock-img {
+	width: 250px;
+}
+
+.cme-light {
+	width: 220px;
+}
+
+.cme-dark {
+	width: 220px;
+}
+
+@media (min-width: 450px) {
+	.innerblock1 {
+		width: 350px;
+		padding: 20px;
+	}
+
+	.innerblock2 {
+		width: 350px;
+		padding: 20px;
+	}
+
+	.imageblock-img {
+		width: 350px;
+	}
+
+	.cme-light {
+		width: 350px;
+	}
+
+	.cme-dark {
+		width: 350px;
+	}
+}
+
+@media (min-width: 590px) {
+	.innerblock1 {
+		width: 450px;
+		padding: 40px;
+	}
+
+	.innerblock2 {
+		width: 450px;
+		padding: 40px;
+	}
+
+	.imageblock-img {
+		width: 450px;
+	}
+
+	.cme-light {
+		width: 350px;
+	}
+
+	.cme-dark {
+		width: 350px;
+	}
+}
+
+@media (min-width: 690px) {
+	.innerblock1 {
+		width: 550px;
+		padding: 40px;
+	}
+
+	.innerblock2 {
+		width: 550px;
+		padding: 40px;
+	}
+
+	.imageblock-img {
+		width: 550px;
+	}
+
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
+		width: 400px;
+	}
+}
+
+@media (min-width: 790px) {
+	.innerblock1 {
+		width: 650px;
+		padding: 40px;
+	}
+
+	.innerblock2 {
+		width: 650px;
+		padding: 40px;
+	}
+
+	.imageblock-img {
+		width: 650px;
+	}
+
+	.cme-light {
+		width: 400px;
+	}
+
+	.cme-dark {
+		width: 400px;
+	}
+}

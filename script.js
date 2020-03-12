@@ -65,6 +65,10 @@ let texts = {
 		'RO': 'CONTACT',
 		'EN': 'CONTACT'
 	},
+	'blog': {
+		'RO': 'BLOG',
+		'EN': 'BLOG'
+	},
 	'copyright': {
 		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
 		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
@@ -351,6 +355,14 @@ function createMenuItems(modalPartId) {
 				onclick: 'gotoPage("contact.html")',
 				class: 'menu-item-link'
 			}).html(getText('contact')),
+		),
+		$('<div/>', {
+			class: 'menu-item'
+		}).append(
+			$('<a/>', {
+				onclick: 'gotoPage("blog.html")',
+				class: 'menu-item-link'
+			}).html(getText('blog')),
 		),
 	);
 }
