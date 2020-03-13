@@ -104,6 +104,14 @@
 
 .subtitle {
 	margin-top: -20px;
+}
+
+.postdate {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 12px;
+}
+
+.posttag {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 12px;
 }
