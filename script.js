@@ -65,10 +65,6 @@ let texts = {
 		'RO': 'CONTACT',
 		'EN': 'CONTACT'
 	},
-	'blog': {
-		'RO': 'BLOG',
-		'EN': 'BLOG'
-	},
 	'copyright': {
 		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
 		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
@@ -196,7 +192,7 @@ function rotateLanguage() {
 
 function applyLanguage(lang) {
 	let currentFilename = getCurrentFilename();
-	let newUrl = computeNewUrl(currentFilename, lang);
+	let newUrl = computeNewUrl(currentFilename, lang, false);
 	window.open(newUrl, "_self");
 }
 
@@ -209,11 +205,19 @@ function getCurrentFilename() {
 
 function gotoPage(filename) {
 	let lang = computeExistingLang();
-	let newUrl = computeNewUrl(filename, lang);
+	let newUrl = computeNewUrl(filename, lang, true);
 	window.open(newUrl, "_self");
 }
 
-function computeNewUrl(filename, lang) {
+function isInSubFolder(url) {
+	let lastSlashPos = url.lastIndexOf('/');
+    let path = url.substring(0, lastSlashPos);
+	lastSlashPos = path.lastIndexOf('/');
+	let subFolder = path.substring(lastSlashPos + 1);
+	return !(["webapp", "sorelmitra.com"].includes(subFolder));
+}
+
+function computeNewUrl(filename, lang, computePath) {
 	let dotPos = filename.lastIndexOf('.');
 	let ext = filename.substring(dotPos + 1);
 	let dashPos = filename.lastIndexOf('-');
@@ -230,6 +234,12 @@ function computeNewUrl(filename, lang) {
 	let newFilename = `${name}-${lang}.${ext}`;
 	if (lang == "EN") {
 		newFilename = `${name}.${ext}`;
+	}
+	if (computePath) {
+		let url = window.location.href;
+		if (isInSubFolder(url)) {
+			newFilename = `../${newFilename}`;
+		}
 	}
 	LOG.debug(`Filename for new lang ${lang}: ${newFilename}`);
 	return newFilename;
@@ -344,7 +354,7 @@ function createMenuItems(modalPartId) {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				onclick: 'gotoPage("freetime.html")',
+				onclick: 'gotoPage("freetime/index.html")',
 				class: 'menu-item-link'
 			}).html(getText('freetime')),
 		),
@@ -355,14 +365,6 @@ function createMenuItems(modalPartId) {
 				onclick: 'gotoPage("contact.html")',
 				class: 'menu-item-link'
 			}).html(getText('contact')),
-		),
-		$('<div/>', {
-			class: 'menu-item'
-		}).append(
-			$('<a/>', {
-				onclick: 'gotoPage("blog.html")',
-				class: 'menu-item-link'
-			}).html(getText('blog')),
 		),
 	);
 }
