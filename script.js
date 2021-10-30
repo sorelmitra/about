@@ -31,20 +31,27 @@ function entryPoint() {
 	createModalElements("id-menu-modal", "id-modal-root", "id-modal-close-button", "modal-menu");
 	createMenuItems("modal-menu");
 	createMenuBar();
+	createNavBarForSubPages();
 }
 
 const imgUiMenuOn = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
 const imgUiMenuOff = 'https://live.staticflickr.com/65535/48711141977_7c603ce013_o.png';
 const imgUiMenuOffLit = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
 const imgUiAvatar = 'https://live.staticflickr.com/65535/48705589673_ce783b381c_o.png';
+const imgUiRightOn = "https://live.staticflickr.com/65535/51641432738_6f1e1d56be_o.png";
+const imgUiRightOff = "https://live.staticflickr.com/65535/51641432743_0f9eb7b265_o.png";
+const imgUiLeftOn = "https://live.staticflickr.com/65535/51642068340_e9af3d5010_o.png";
+const imgUiLeftOff = "https://live.staticflickr.com/65535/51640389057_e60562f6b6_o.png";
+const imgUiUpOn = "https://live.staticflickr.com/65535/51641870224_8e09551917_o.png";
+const imgUiUpOff = "https://live.staticflickr.com/65535/51641870239_bcf5a08194_o.png";
 let imgUiLang = {
 	RO: 'https://live.staticflickr.com/65535/48705590238_e0a17e83bd_o.png',
 	EN: 'https://live.staticflickr.com/65535/48706045511_f0557d72f9_o.png',
 	ES: 'https://live.staticflickr.com/65535/48710362622_258acb7a9d_o.png',
 };
 let domain = null;
-let knownLanguages = ['RO', 'EN', /*'ES'*/]
-let texts = {
+const knownLanguages = ['RO', 'EN', /*'ES'*/]
+const texts = {
 	'home': {
 		'RO': 'ACASĂ',
 		'EN': 'HOME'
@@ -68,8 +75,23 @@ let texts = {
 	'copyright': {
 		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
 		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
+	},
+	'prev': {
+		'RO': 'Anterior',
+		'EN': 'Previous'
+	},
+	'next': {
+		'RO': 'Următor',
+		'EN': 'Next'
+	},
+	'up': {
+		'RO': 'Sus',
+		'EN': 'Up'
 	}
 }
+
+const freetimePages = ["sailing", "black-fortress", "toy-bridge", "toy-yacht"];
+
 
 function createMenuBar() {
 	createMenuBarForNormalPage();
@@ -217,14 +239,28 @@ function isInSubFolder(url) {
 	return !(["webapp", "sorelmitra.com"].includes(subFolder));
 }
 
-function computeNewUrl(filename, lang, computePath) {
+function getFilenameParts(filename) {
 	let dotPos = filename.lastIndexOf('.');
 	let ext = filename.substring(dotPos + 1);
 	let dashPos = filename.lastIndexOf('-');
 	let name = filename.substring(0, dotPos);
+	let langPart = "EN";
 	if (dashPos > 0) {
-		name = filename.substring(0, dashPos);
+		const lastDashedPart = filename.substring(dashPos + 1, dotPos);
+		if (knownLanguages.includes(lastDashedPart)) {
+			name = filename.substring(0, dashPos);
+			langPart = lastDashedPart;
+		}
 	}
+	return {
+		name: name,
+		ext: ext,
+		langPart: langPart
+	};
+}
+
+function computeNewUrl(filename, lang, computePath) {
+	let { name, ext } = getFilenameParts(filename);
 	if (name.length < 1) {
 		name = "index";
 	}
@@ -241,7 +277,7 @@ function computeNewUrl(filename, lang, computePath) {
 			newFilename = `../${newFilename}`;
 		}
 	}
-	LOG.debug(`Filename for new lang ${lang}: ${newFilename}`);
+	LOG.debug(`Filename for lang ${lang}: ${newFilename}`);
 	return newFilename;
 }
 
@@ -249,14 +285,106 @@ function computeExistingLang() {
 	let url = window.location.href;
 	let lastSlashPos = url.lastIndexOf('/');
     let filename = url.substring(lastSlashPos + 1);
-	let dotPos = filename.lastIndexOf('.');
-	let dashPos = filename.lastIndexOf('-');
-	let langPart = "EN";
-	if (dashPos > 0) {
-		langPart = filename.substring(dashPos + 1, dotPos);
-	}
+	let { langPart } = getFilenameParts(filename);
 	LOG.debug(`Current lang <${langPart}>`);
 	return langPart;
+}
+
+function createNavBarForSubPages() {
+	createNavBarFreetime();
+}
+
+function computeSubPageUrl(filename) {
+	return computeNewUrl(`${filename}.html`, computeExistingLang(), false);
+}
+
+function computeNavBarIndexes() {
+	const filename = getCurrentFilename();
+	const { name } = getFilenameParts(filename);
+	const currentIndex = freetimePages.indexOf(name);
+	if (currentIndex < 0) {
+		return;
+	}
+	const prevIndex = currentIndex + 1;
+	const nextIndex = currentIndex - 1;
+	LOG.debug(`Current freetime sub-page <${name}>, index <${currentIndex}>, prev <${prevIndex}>, next <${nextIndex}>`);
+	return {prevIndex, nextIndex};
+}
+
+function createNavBarFreeTimePrevLink(prevIndex) {
+	if (prevIndex >= freetimePages.length) {
+		return $('<div/>', {
+			class: 'subpage-nav-link-invisible noselect'
+		});
+	}
+	return $('<a>', {
+		class: 'subpage-nav-prev-link',
+		href: computeSubPageUrl(freetimePages[prevIndex]),
+	}).append(
+		$('<img/>', {
+			src: imgUiRightOff,
+			class: 'subpage-nav-button',
+			alt: getText('prev')
+		}).hover(
+			function() {$(this).attr('src', imgUiRightOn)},
+			function() {$(this).attr('src', imgUiRightOff)}
+		)
+	);
+}
+
+function createNavBarFreeTimeNextLink(nextIndex) {
+	if (nextIndex < 0) {
+		return $('<div/>', {
+			class: 'subpage-nav-link-invisible noselect'
+		});
+	}
+	return $('<a>', {
+		class: 'subpage-nav-next-link',
+		href: computeSubPageUrl(freetimePages[nextIndex]),
+	}).append(
+		$('<img/>', {
+			src: imgUiLeftOff,
+			class: 'subpage-nav-button',
+			alt: getText('next')
+		}).hover(
+			function() {$(this).attr('src', imgUiLeftOn)},
+			function() {$(this).attr('src', imgUiLeftOff)}
+		)
+	);
+}
+
+function createNavBarFreeTimeUpLink() {
+	return $('<a>', {
+		class: 'subpage-nav-up-link',
+		href: computeSubPageUrl('index'),
+	}).append(
+		$('<img/>', {
+			src: imgUiUpOff,
+			class: 'subpage-nav-button',
+			alt: getText('up')
+		}).hover(
+			function() {$(this).attr('src', imgUiUpOn)},
+			function() {$(this).attr('src', imgUiUpOff)}
+		)
+	);
+}
+
+function createNavBarFreetime() {
+	const {prevIndex, nextIndex} = computeNavBarIndexes();
+	const prevLink = createNavBarFreeTimePrevLink(prevIndex);
+	const nextLink = createNavBarFreeTimeNextLink(nextIndex);
+	const upLink = createNavBarFreeTimeUpLink();
+	$('#id-freetime-nav').append(
+		$('<div/>', {
+			class: 'subpage-nav-innerblock'
+		}).append(
+			$('<span/>').append(nextLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(upLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(prevLink)
+		)
+	);
 }
 
 function getLangImageSrc() {

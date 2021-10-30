@@ -20,6 +20,13 @@
 	text-align: left;
 }
 
+.subpage-nav-innerblock {
+	background-color: #223305;
+	color: #e3d69a;
+	margin: auto;
+	border: 1px black solid;
+}
+
 .innerblock2 {
 	background-color: #223305;
 	color: #e3d69a;
