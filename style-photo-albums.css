@@ -20,7 +20,7 @@
 	text-align: left;
 }
 
-.subpage-nav-innerblock {
+.subpage-nav-innerblock2 {
 	background-color: #0f0e0c;
 	color: #e3d69a;
 	margin: auto;
@@ -41,10 +41,8 @@
 	color: #e3d69a;
 	display: inline-block;
 	margin: auto;
-	padding: 10px;
 	text-align: left;
 	border: 1px black solid;
-	width: 92%;
 }
 
 .imageblock-photo {

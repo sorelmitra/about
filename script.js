@@ -99,6 +99,11 @@ const knownSubpages = {
 	"photo-albums": ["USA-2007"]
 };
 
+const subPageNavStyles = {
+	"freetime": "subpage-nav-innerblock",
+	"photo-albums": "subpage-nav-innerblock2"
+}
+
 
 function createMenuBar() {
 	createMenuBarForNormalPage();
@@ -330,7 +335,7 @@ function createNavBarForSubPages() {
 	const upLink = createNavBarUpLink();
 	$(subPageId).append(
 		$('<div/>', {
-			class: 'subpage-nav-innerblock'
+			class: subPageNavStyles[subPage]
 		}).append(
 			$('<span/>').append(nextLink),
 			$('<span/>').append(' '),
