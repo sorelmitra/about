@@ -68,6 +68,10 @@ const texts = {
 		'RO': 'TIMP LIBER',
 		'EN': 'FREE TIME'
 	},
+	'photo-albums': {
+		'RO': 'ALBUME FOTO',
+		'EN': 'PHOTO ALBUMS'
+	},
 	'contact': {
 		'RO': 'CONTACT',
 		'EN': 'CONTACT'
@@ -90,7 +94,10 @@ const texts = {
 	}
 }
 
-const freetimePages = ["sailing", "black-fortress", "toy-bridge", "toy-yacht"];
+const knownSubpages = {
+	"freetime": ["sailing", "black-fortress", "toy-bridge", "toy-yacht"],
+	"photo-albums": ["USA-2007"]
+};
 
 
 function createMenuBar() {
@@ -290,36 +297,76 @@ function computeExistingLang() {
 	return langPart;
 }
 
+function computeSubPageId() {
+	let subPage = null;
+	let subPageId = null;
+	for (const key in knownSubpages) {
+		subPageId = `#id-${key}-nav`;
+		if ($(subPageId).length) {
+			subPage = key;
+			break;
+		}
+	}
+	LOG.debug(`Subpage ${subPage}, id ${subPageId}`);
+	if (subPage == null) {
+		return {subPage: null, subPageId: null};
+	}
+	return {subPage, subPageId};
+}
+
 function createNavBarForSubPages() {
-	createNavBarFreetime();
+	const {subPage, subPageId} = computeSubPageId();
+	if (subPageId == null) {
+		return;
+	}
+
+	const {prevIndex, nextIndex} = computeNavBarIndexes(subPage);
+	if (prevIndex == null || nextIndex == null) {
+		return;
+	}
+
+	const prevLink = createNavBarPrevLink(subPage, prevIndex);
+	const nextLink = createNavTimeNextLink(subPage, nextIndex);
+	const upLink = createNavBarUpLink();
+	$(subPageId).append(
+		$('<div/>', {
+			class: 'subpage-nav-innerblock'
+		}).append(
+			$('<span/>').append(nextLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(upLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(prevLink)
+		)
+	);
 }
 
 function computeSubPageUrl(filename) {
 	return computeNewUrl(`${filename}.html`, computeExistingLang(), false);
 }
 
-function computeNavBarIndexes() {
+function computeNavBarIndexes(subPage) {
 	const filename = getCurrentFilename();
 	const { name } = getFilenameParts(filename);
-	const currentIndex = freetimePages.indexOf(name);
+	const currentIndex = knownSubpages[subPage].indexOf(name);
 	if (currentIndex < 0) {
-		return;
+		return {prevIndex: null, nextIndex: null};
 	}
 	const prevIndex = currentIndex + 1;
 	const nextIndex = currentIndex - 1;
-	LOG.debug(`Current freetime sub-page <${name}>, index <${currentIndex}>, prev <${prevIndex}>, next <${nextIndex}>`);
+	LOG.debug(`Current sub-page <${name}>, index <${currentIndex}>, prev <${prevIndex}>, next <${nextIndex}>`);
 	return {prevIndex, nextIndex};
 }
 
-function createNavBarFreeTimePrevLink(prevIndex) {
-	if (prevIndex >= freetimePages.length) {
+function createNavBarPrevLink(subPage, prevIndex) {
+	if (prevIndex >= knownSubpages[subPage].length) {
 		return $('<div/>', {
 			class: 'subpage-nav-link-invisible noselect'
 		});
 	}
 	return $('<a>', {
 		class: 'subpage-nav-prev-link',
-		href: computeSubPageUrl(freetimePages[prevIndex]),
+		href: computeSubPageUrl(knownSubpages[subPage][prevIndex]),
 	}).append(
 		$('<img/>', {
 			src: imgUiRightOff,
@@ -332,7 +379,7 @@ function createNavBarFreeTimePrevLink(prevIndex) {
 	);
 }
 
-function createNavBarFreeTimeNextLink(nextIndex) {
+function createNavTimeNextLink(subPage, nextIndex) {
 	if (nextIndex < 0) {
 		return $('<div/>', {
 			class: 'subpage-nav-link-invisible noselect'
@@ -340,7 +387,7 @@ function createNavBarFreeTimeNextLink(nextIndex) {
 	}
 	return $('<a>', {
 		class: 'subpage-nav-next-link',
-		href: computeSubPageUrl(freetimePages[nextIndex]),
+		href: computeSubPageUrl(knownSubpages[subPage][nextIndex]),
 	}).append(
 		$('<img/>', {
 			src: imgUiLeftOff,
@@ -353,7 +400,7 @@ function createNavBarFreeTimeNextLink(nextIndex) {
 	);
 }
 
-function createNavBarFreeTimeUpLink() {
+function createNavBarUpLink() {
 	return $('<a>', {
 		class: 'subpage-nav-up-link',
 		href: computeSubPageUrl('index'),
@@ -365,24 +412,6 @@ function createNavBarFreeTimeUpLink() {
 		}).hover(
 			function() {$(this).attr('src', imgUiUpOn)},
 			function() {$(this).attr('src', imgUiUpOff)}
-		)
-	);
-}
-
-function createNavBarFreetime() {
-	const {prevIndex, nextIndex} = computeNavBarIndexes();
-	const prevLink = createNavBarFreeTimePrevLink(prevIndex);
-	const nextLink = createNavBarFreeTimeNextLink(nextIndex);
-	const upLink = createNavBarFreeTimeUpLink();
-	$('#id-freetime-nav').append(
-		$('<div/>', {
-			class: 'subpage-nav-innerblock'
-		}).append(
-			$('<span/>').append(nextLink),
-			$('<span/>').append(' '),
-			$('<span/>').append(upLink),
-			$('<span/>').append(' '),
-			$('<span/>').append(prevLink)
 		)
 	);
 }
@@ -485,6 +514,14 @@ function createMenuItems(modalPartId) {
 				onclick: 'gotoPage("freetime/index.html")',
 				class: 'menu-item-link'
 			}).html(getText('freetime')),
+		),
+		$('<div/>', {
+			class: 'menu-item'
+		}).append(
+			$('<a/>', {
+				onclick: 'gotoPage("photo-albums/index.html")',
+				class: 'menu-item-link'
+			}).html(getText('photo-albums')),
 		),
 		$('<div/>', {
 			class: 'menu-item'
