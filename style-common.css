@@ -692,6 +692,10 @@
 	margin-top: 50px;
 }
 
+.toclink {
+	text-decoration: none;
+}
+
 .caption {
 	font-size: .7em;
 	color: #373737;
