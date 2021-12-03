@@ -68,6 +68,10 @@ const texts = {
 		'RO': 'TIMP LIBER',
 		'EN': 'FREE TIME'
 	},
+	'photo-albums': {
+		'RO': 'ALBUME FOTO',
+		'EN': 'PHOTO ALBUMS'
+	},
 	'contact': {
 		'RO': 'CONTACT',
 		'EN': 'CONTACT'
@@ -92,10 +96,12 @@ const texts = {
 
 const knownSubpages = {
 	"freetime": ["sailing", "black-fortress", "toy-bridge", "toy-yacht"],
+	"photo-albums": ["USA-2007"]
 };
 
 const subPageNavStyles = {
 	"freetime": "subpage-nav-innerblock",
+	"photo-albums": "subpage-nav-innerblock2"
 }
 
 
@@ -513,6 +519,14 @@ function createMenuItems(modalPartId) {
 				onclick: 'gotoPage("freetime/index.html")',
 				class: 'menu-item-link'
 			}).html(getText('freetime')),
+		),
+		$('<div/>', {
+			class: 'menu-item'
+		}).append(
+			$('<a/>', {
+				onclick: 'gotoPage("photo-albums/index.html")',
+				class: 'menu-item-link'
+			}).html(getText('photo-albums')),
 		),
 		$('<div/>', {
 			class: 'menu-item'
