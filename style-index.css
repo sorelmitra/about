@@ -88,19 +88,19 @@ body {
 }
 
 .index-div-work {
-	left: 60px;
+	left: 50px;
 	top: 100px;
-	width: 200px;
-	height: 170px;
-	font-size: 11px;
+	width: 230px;
+	height: 190px;
+	font-size: 14px;
 }
 
 .index-div-freetime {
 	left: 20px;
-	top: 290px;
-	width: 160px;
-	height: 70px;
-	font-size: 11px;
+	top: 310px;
+	width: 200px;
+	height: 90px;
+	font-size: 14px;
 }
 
 @media (min-width: 590px) {

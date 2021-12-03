@@ -31,20 +31,27 @@ function entryPoint() {
 	createModalElements("id-menu-modal", "id-modal-root", "id-modal-close-button", "modal-menu");
 	createMenuItems("modal-menu");
 	createMenuBar();
+	createNavBarForSubPages();
 }
 
 const imgUiMenuOn = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
 const imgUiMenuOff = 'https://live.staticflickr.com/65535/48711141977_7c603ce013_o.png';
 const imgUiMenuOffLit = 'https://live.staticflickr.com/65535/48710978106_df47bcb4d6_o.png';
 const imgUiAvatar = 'https://live.staticflickr.com/65535/48705589673_ce783b381c_o.png';
+const imgUiRightOn = "https://live.staticflickr.com/65535/51641432738_6f1e1d56be_o.png";
+const imgUiRightOff = "https://live.staticflickr.com/65535/51641432743_0f9eb7b265_o.png";
+const imgUiLeftOn = "https://live.staticflickr.com/65535/51642068340_e9af3d5010_o.png";
+const imgUiLeftOff = "https://live.staticflickr.com/65535/51640389057_e60562f6b6_o.png";
+const imgUiUpOn = "https://live.staticflickr.com/65535/51641870224_8e09551917_o.png";
+const imgUiUpOff = "https://live.staticflickr.com/65535/51641870239_bcf5a08194_o.png";
 let imgUiLang = {
 	RO: 'https://live.staticflickr.com/65535/48705590238_e0a17e83bd_o.png',
 	EN: 'https://live.staticflickr.com/65535/48706045511_f0557d72f9_o.png',
 	ES: 'https://live.staticflickr.com/65535/48710362622_258acb7a9d_o.png',
 };
 let domain = null;
-let knownLanguages = ['RO', 'EN', /*'ES'*/]
-let texts = {
+const knownLanguages = ['RO', 'EN', /*'ES'*/]
+const texts = {
 	'home': {
 		'RO': 'ACASĂ',
 		'EN': 'HOME'
@@ -68,8 +75,29 @@ let texts = {
 	'copyright': {
 		'RO': '<b>Notă</b>: Tot conținutul acestui site este © Sorel Mitra și nu poate fi folosit sub nici o formă fără acordul meu scris.',
 		'EN': '<b>Note</b>: All content on this site is © Sorel Mitra may not be used without my written approval.'
+	},
+	'prev': {
+		'RO': 'Anterior',
+		'EN': 'Previous'
+	},
+	'next': {
+		'RO': 'Următor',
+		'EN': 'Next'
+	},
+	'up': {
+		'RO': 'Sus',
+		'EN': 'Up'
 	}
 }
+
+const knownSubpages = {
+	"freetime": ["sailing", "black-fortress", "toy-bridge", "toy-yacht"],
+};
+
+const subPageNavStyles = {
+	"freetime": "subpage-nav-innerblock",
+}
+
 
 function createMenuBar() {
 	createMenuBarForNormalPage();
@@ -192,7 +220,7 @@ function rotateLanguage() {
 
 function applyLanguage(lang) {
 	let currentFilename = getCurrentFilename();
-	let newUrl = computeNewUrl(currentFilename, lang);
+	let newUrl = computeNewUrl(currentFilename, lang, false);
 	window.open(newUrl, "_self");
 }
 
@@ -205,18 +233,40 @@ function getCurrentFilename() {
 
 function gotoPage(filename) {
 	let lang = computeExistingLang();
-	let newUrl = computeNewUrl(filename, lang);
+	let newUrl = computeNewUrl(filename, lang, true);
 	window.open(newUrl, "_self");
 }
 
-function computeNewUrl(filename, lang) {
+function isInSubFolder(url) {
+	let lastSlashPos = url.lastIndexOf('/');
+    let path = url.substring(0, lastSlashPos);
+	lastSlashPos = path.lastIndexOf('/');
+	let subFolder = path.substring(lastSlashPos + 1);
+	return !(["webapp", "sorelmitra.com"].includes(subFolder));
+}
+
+function getFilenameParts(filename) {
 	let dotPos = filename.lastIndexOf('.');
 	let ext = filename.substring(dotPos + 1);
 	let dashPos = filename.lastIndexOf('-');
 	let name = filename.substring(0, dotPos);
+	let langPart = "EN";
 	if (dashPos > 0) {
-		name = filename.substring(0, dashPos);
+		const lastDashedPart = filename.substring(dashPos + 1, dotPos);
+		if (knownLanguages.includes(lastDashedPart)) {
+			name = filename.substring(0, dashPos);
+			langPart = lastDashedPart;
+		}
 	}
+	return {
+		name: name,
+		ext: ext,
+		langPart: langPart
+	};
+}
+
+function computeNewUrl(filename, lang, computePath) {
+	let { name, ext } = getFilenameParts(filename);
 	if (name.length < 1) {
 		name = "index";
 	}
@@ -227,7 +277,13 @@ function computeNewUrl(filename, lang) {
 	if (lang == "EN") {
 		newFilename = `${name}.${ext}`;
 	}
-	LOG.debug(`Filename for new lang ${lang}: ${newFilename}`);
+	if (computePath) {
+		let url = window.location.href;
+		if (isInSubFolder(url)) {
+			newFilename = `../${newFilename}`;
+		}
+	}
+	LOG.debug(`Filename for lang ${lang}: ${newFilename}`);
 	return newFilename;
 }
 
@@ -235,14 +291,128 @@ function computeExistingLang() {
 	let url = window.location.href;
 	let lastSlashPos = url.lastIndexOf('/');
     let filename = url.substring(lastSlashPos + 1);
-	let dotPos = filename.lastIndexOf('.');
-	let dashPos = filename.lastIndexOf('-');
-	let langPart = "EN";
-	if (dashPos > 0) {
-		langPart = filename.substring(dashPos + 1, dotPos);
-	}
+	let { langPart } = getFilenameParts(filename);
 	LOG.debug(`Current lang <${langPart}>`);
 	return langPart;
+}
+
+function computeSubPageId() {
+	let subPage = null;
+	let subPageId = null;
+	for (const key in knownSubpages) {
+		subPageId = `#id-${key}-nav`;
+		if ($(subPageId).length) {
+			subPage = key;
+			break;
+		}
+	}
+	LOG.debug(`Subpage ${subPage}, id ${subPageId}`);
+	if (subPage == null) {
+		return {subPage: null, subPageId: null};
+	}
+	return {subPage, subPageId};
+}
+
+function createNavBarForSubPages() {
+	const {subPage, subPageId} = computeSubPageId();
+	if (subPageId == null) {
+		return;
+	}
+
+	const {prevIndex, nextIndex} = computeNavBarIndexes(subPage);
+	if (prevIndex == null || nextIndex == null) {
+		return;
+	}
+
+	const prevLink = createNavBarPrevLink(subPage, prevIndex);
+	const nextLink = createNavTimeNextLink(subPage, nextIndex);
+	const upLink = createNavBarUpLink();
+	$(subPageId).append(
+		$('<div/>', {
+			class: subPageNavStyles[subPage]
+		}).append(
+			$('<span/>').append(nextLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(upLink),
+			$('<span/>').append(' '),
+			$('<span/>').append(prevLink)
+		)
+	);
+}
+
+function computeSubPageUrl(filename) {
+	return computeNewUrl(`${filename}.html`, computeExistingLang(), false);
+}
+
+function computeNavBarIndexes(subPage) {
+	const filename = getCurrentFilename();
+	const { name } = getFilenameParts(filename);
+	const currentIndex = knownSubpages[subPage].indexOf(name);
+	if (currentIndex < 0) {
+		return {prevIndex: null, nextIndex: null};
+	}
+	const prevIndex = currentIndex + 1;
+	const nextIndex = currentIndex - 1;
+	LOG.debug(`Current sub-page <${name}>, index <${currentIndex}>, prev <${prevIndex}>, next <${nextIndex}>`);
+	return {prevIndex, nextIndex};
+}
+
+function createNavBarPrevLink(subPage, prevIndex) {
+	if (prevIndex >= knownSubpages[subPage].length) {
+		return $('<div/>', {
+			class: 'subpage-nav-link-invisible noselect'
+		});
+	}
+	return $('<a>', {
+		class: 'subpage-nav-prev-link',
+		href: computeSubPageUrl(knownSubpages[subPage][prevIndex]),
+	}).append(
+		$('<img/>', {
+			src: imgUiRightOff,
+			class: 'subpage-nav-button',
+			alt: getText('prev')
+		}).hover(
+			function() {$(this).attr('src', imgUiRightOn)},
+			function() {$(this).attr('src', imgUiRightOff)}
+		)
+	);
+}
+
+function createNavTimeNextLink(subPage, nextIndex) {
+	if (nextIndex < 0) {
+		return $('<div/>', {
+			class: 'subpage-nav-link-invisible noselect'
+		});
+	}
+	return $('<a>', {
+		class: 'subpage-nav-next-link',
+		href: computeSubPageUrl(knownSubpages[subPage][nextIndex]),
+	}).append(
+		$('<img/>', {
+			src: imgUiLeftOff,
+			class: 'subpage-nav-button',
+			alt: getText('next')
+		}).hover(
+			function() {$(this).attr('src', imgUiLeftOn)},
+			function() {$(this).attr('src', imgUiLeftOff)}
+		)
+	);
+}
+
+function createNavBarUpLink() {
+	return $('<a>', {
+		class: 'subpage-nav-up-link',
+		href: computeSubPageUrl('index'),
+	}).append(
+		$('<img/>', {
+			src: imgUiUpOff,
+			class: 'subpage-nav-button',
+			alt: getText('up')
+		}).hover(
+			function() {$(this).attr('src', imgUiUpOn)},
+			function() {$(this).attr('src', imgUiUpOff)}
+		)
+	);
 }
 
 function getLangImageSrc() {
@@ -340,7 +510,7 @@ function createMenuItems(modalPartId) {
 			class: 'menu-item'
 		}).append(
 			$('<a/>', {
-				onclick: 'gotoPage("freetime.html")',
+				onclick: 'gotoPage("freetime/index.html")',
 				class: 'menu-item-link'
 			}).html(getText('freetime')),
 		),
