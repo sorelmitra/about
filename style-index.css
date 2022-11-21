@@ -10,6 +10,11 @@ body {
 	color: gold;
 	background-color: #808080;
 	hanging-punctuation: first;
+	height: 100%;
+}
+
+html {
+	height: 100%;
 }
 
 h1, h2, h3, h4 {
