@@ -1,0 +1,61 @@
+@startuml "proj-wlan-sim"
+
+skinparam handwritten true
+skinparam nodesep 60
+skinparam ranksep 50
+
+skinparam node {
+	BackgroundColor #2e4606
+	BorderColor White
+	FontColor White
+	FontSize 24
+}
+
+skinparam cloud {
+	BackgroundColor #2e4606
+	BorderColor White
+	FontColor White
+}
+
+skinparam component {
+	BackgroundColor #49055a
+	FontColor White
+	BorderColor White
+}
+
+skinparam interface {
+	FontColor White
+}
+
+node "Linux Server\n\n" as server1 {
+	cloud "Simulated Wi-Fi Medium\n\n" as wifiMedium1 {
+		component simClients1 [
+			Simulated Wi-Fi Clients
+			Thousands of them
+		]
+		component simAps1 [
+			Simulated Access Points
+			Hundreds of them
+		]
+		component simSwitch1 [
+			Simulated Switch
+		]
+	}
+	component simController1 [
+		Simulator Controller
+		CLI Interface
+	]
+	interface "Ethernet Port" as ethServer1
+}
+
+simClients1 <--> simSwitch1 #White
+simSwitch1 <--> simAps1 #White
+simAps1 <--> ethServer1 #White
+simClients1 <-> simController1 #White
+simAps1 <-> simController1 #White
+
+cloud "Real Wi-Fi Switches" as wifiSwitches1
+
+ethServer1 <--> wifiSwitches1 #c66ddc
+
+@enduml

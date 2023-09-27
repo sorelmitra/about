@@ -1,0 +1,24 @@
+@startuml "proj-soft-dev-process"
+
+skinparam handwritten true
+
+start
+
+#White:New project;
+if (Big project?) then (yes)
+	#MediumSeaGreen:Reserve a few days for the items below;
+	#MediumSeaGreen:Gather and refine requirements;
+	#MediumSeaGreen:Define and review work items;
+	#MediumSeaGreen:Estimate work items, \nincluding automatic tests;
+	#MediumSeaGreen:Implement the work items you defined \nand expect some requirements changes;
+else (no)
+	#HotPink:Have a quick talk with stakeholder;
+	#HotPink:Gather enough requirements \nto get a sense what you need to do;
+	#HotPink:Provide quick "no-larger-than" estimate;
+	#HotPink:Get ready for requirements change;
+	#HotPink:Base your implementation on \nquick automatic tests using our framework;
+endif
+
+end
+
+@enduml
