@@ -534,10 +534,6 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.mr-3 {
-  margin-right: 0.75rem;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -558,20 +554,12 @@ video {
   height: 7rem;
 }
 
-.h-auto {
-  height: auto;
-}
-
 .w-28 {
   width: 7rem;
 }
 
 .w-\[100\%\] {
   width: 100%;
-}
-
-.w-\[150px\] {
-  width: 150px;
 }
 
 .flex-row {
